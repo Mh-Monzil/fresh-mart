@@ -5,7 +5,7 @@ import { IoMenu } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { useState } from "react";
-import NavLinks from "../NavLinks";
+import NavLinks from "./NavLinks";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

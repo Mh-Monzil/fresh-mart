@@ -9,6 +9,9 @@ export default {
       colors: {
         'primaryGreen': "#10B981",
         'secondaryMintCream': "#FFEDD5",
+      },
+      fontFamily: {
+        'inter': "'Inter', sans-serif"
       }
     },
   },
