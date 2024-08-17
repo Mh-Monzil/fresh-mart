@@ -78,9 +78,9 @@ const Register = () => {
             </button>
           </div>
           <p className="mt-2 font-medium">
-            New here?{" "}
+            Already Have an account?{" "}
             <Link to="/register" className="underline text-green-700">
-              Register now!
+              Login now!
             </Link>
           </p>
         </form>
