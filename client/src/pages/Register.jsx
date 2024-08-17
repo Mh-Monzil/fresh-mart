@@ -4,12 +4,7 @@ import useAuth from "../hooks/useAuth";
 
 const Register = () => {
   const {
-    signInWithGoogle,
     createUser,
-    updateUserProfile,
-    user,
-    setUser,
-    loading,
     setLoading,
   } = useAuth();
   const navigate = useNavigate();

@@ -1,12 +1,50 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
+  const { signInWithGoogle, loginUser, user, loading, setLoading } = useAuth();
+  // const axiosPublic = UseAxiosPublic();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || "/";
   const { register, handleSubmit } = useForm();
 
+  // useEffect(() => {
+  //   if(user){
+  //     navigate('/')
+  //   }
+  // }, [navigate, user])
+
   const onSubmit = async (data) => {
-    console.log(data);
+    const {email,password} = data;
+    console.log(email,password);
+    try{
+      setLoading(true);
+      await loginUser(email, password)
+
+      navigate(from, {replace: true});
+      setLoading(false);
+      
+    }catch(error){
+      console.log(error);
+      setLoading(false);
+    }
+  }
+
+  //google sign in
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -51,6 +89,12 @@ const Login = () => {
               {...register("password", { required: true })}
             />
           </div>
+
+          <div onClick={handleGoogleSignIn} className="w-full flex items-center justify-center gap-2 border mt-6 py-3 rounded-md">
+            <FcGoogle className="text-2xl" />
+            <span className="font-semibold">Login With Google</span>
+          </div>
+
           <div className="mt-12">
             <button
               type="submit"
