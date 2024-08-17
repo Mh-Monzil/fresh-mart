@@ -7,7 +7,9 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../Firebase/firebase.init";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+
+export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -36,13 +38,12 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-    })
+      setUser(currentUser);
+    });
     return () => {
-        return unsubscribe();
-    }
-  }, [])
-
+      return unsubscribe();
+    };
+  }, []);
 
   const authInfo = {
     user,
@@ -55,9 +56,7 @@ const AuthProvider = ({ children }) => {
     setUser,
   };
 
-  return (
-    <AuthProvider.Provider value={authInfo}>{children}</AuthProvider.Provider>
-  );
+  return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

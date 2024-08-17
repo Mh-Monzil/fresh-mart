@@ -1,12 +1,39 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Register = () => {
+  const {
+    signInWithGoogle,
+    createUser,
+    updateUserProfile,
+    user,
+    setUser,
+    loading,
+    setLoading,
+  } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || "/";
   const { register, handleSubmit } = useForm();
+
+  
 
   const onSubmit = async (data) => {
     console.log(data);
+    const {email, password} = data;
+    try {
+      const result = await createUser(email, password)
+      console.log(result);
+      navigate(from, { replace: true });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+
+
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -28,7 +55,7 @@ const Register = () => {
               name="username"
               className="block w-full px-4 py-2 bg-white border rounded-sm    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300"
               type="name"
-              {...register("email", { required: true })}
+              {...register("name", { required: true })}
             />
           </div>
 
@@ -79,7 +106,7 @@ const Register = () => {
           </div>
           <p className="mt-2 font-medium">
             Already Have an account?{" "}
-            <Link to="/register" className="underline text-green-700">
+            <Link to="/login" className="underline text-green-700">
               Login now!
             </Link>
           </p>
