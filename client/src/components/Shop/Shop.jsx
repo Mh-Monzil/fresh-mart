@@ -47,6 +47,8 @@ const Shop = () => {
 
   return (
     <div>
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-center mt-6">FreshMart - Your One-Stop Grocery Shop</h1>
+        <p className="max-w-[680px] mx-auto font-normal lg:font-medium text-center mt-4">Explore a wide range of fresh produce, pantry essentials, and daily groceries delivered right to your doorstep.</p>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mt-4 lg:mt-8">
         {currentPageProducts.map((product) => (
           <ProductCard key={product._id} product={product} />
