@@ -7,9 +7,10 @@ const Shop = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [currentPageProducts, setCurrentPageProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchedProducts, setSearchedProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const itemsPerPage = 8;
-  const products = searchedProducts.length > 1 ? searchedProducts : currentPageProducts;
+  const products =
+    filteredProducts.length > 1 ? filteredProducts : currentPageProducts;
 
   useEffect(() => {
     getProducts();
@@ -57,7 +58,21 @@ const Shop = () => {
         `/searchedProducts/${searchValue}`
       );
       console.log(data);
-      setSearchedProducts(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const onChange = async (e) => {
+    const searchCategory = e.target.value;
+
+    try {
+      const { data } = await axiosPublic.get(
+        `/searchedCategory/${searchCategory}`
+      );
+      console.log(data);
+      setFilteredProducts(data);
     } catch (error) {
       console.log(error.message);
     }
@@ -74,20 +89,38 @@ const Shop = () => {
       </p>
 
       {/* search  */}
-      <form onSubmit={onSearch} className="flex items-center gap-2 my-10">
-        <input
-          type="text"
-          name="searchValue"
-          placeholder="Type here"
-          className="input border p-2 w-full max-w-xs rounded-md "
-        />
-        <button
-          type="submit"
-          className="w-fit text-white font-semibold bg-primaryGreen p-6 py-2 rounded-md"
-        >
-          Search
-        </button>
-      </form>
+      <div className="flex items-center justify-between">
+        <form onSubmit={onSearch} className="flex items-center gap-2 my-10">
+          <input
+            type="text"
+            name="searchValue"
+            placeholder="Type here"
+            className="input border p-2 w-full max-w-xs rounded-md "
+          />
+          <button
+            type="submit"
+            className="w-fit text-white font-semibold bg-primaryGreen p-6 py-2 rounded-md"
+          >
+            Search
+          </button>
+        </form>
+
+        {/* select form  */}
+        <select onChange={onChange} className="border p-1 rounded-sm">
+          <option value="">Category</option>
+          <option value="fresh-vegetable">Fresh Vegetable</option>
+          <option value="fresh-fruits">Fresh Fruits</option>
+          <option value="dry-fruits">Dry Fruits</option>
+          <option value="butter-ghee">Butter Ghee</option>
+          <option value="juice">Juice</option>
+          <option value="cake">Cake</option>
+          <option value="ice-cream">Ice Cream</option>
+          <option value="Coffee">Coffee</option>
+          <option value="energy-drink">Energy Drink</option>
+          <option value="cereal">cereal</option>
+          <option value="cooking-essentials">Cooking Essentials</option>
+        </select>
+      </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mt-4 lg:mt-8">
         {products.map((product) => (
