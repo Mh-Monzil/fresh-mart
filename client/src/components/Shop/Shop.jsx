@@ -9,6 +9,7 @@ const Shop = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchedProducts, setSearchedProducts] = useState([]);
   const itemsPerPage = 8;
+  const products = searchedProducts.length > 1 ? searchedProducts : currentPageProducts;
 
   useEffect(() => {
     getProducts();
@@ -89,7 +90,7 @@ const Shop = () => {
       </form>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mt-4 lg:mt-8">
-        {currentPageProducts.map((product) => (
+        {products.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
