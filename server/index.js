@@ -41,13 +41,26 @@ async function run() {
       res.send(products)
   });
 
-   //get scholarship by search
+   //get product by search
    app.get("/searchedProducts/:text", async (req, res) => {
     const searchText = req.params.text;
     const finalText = new RegExp(searchText, "i");
     const query = {
       $or: [
         { name: finalText },
+      ],
+    };
+    const result = await productsCollection.find(query).toArray();
+    res.send(result);
+  });
+
+   //get product by search
+   app.get("/searchedCategory/:category", async (req, res) => {
+    const searchCategory = req.params.category;
+    const finalCategory = new RegExp(searchCategory, "i");
+    const query = {
+      $or: [
+        { category: finalCategory },
       ],
     };
     const result = await productsCollection.find(query).toArray();
