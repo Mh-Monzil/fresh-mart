@@ -10,7 +10,7 @@ const Shop = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const itemsPerPage = 8;
   const products =
-    filteredProducts.length > 1 ? filteredProducts : currentPageProducts;
+    filteredProducts.length >= 1 ? filteredProducts : currentPageProducts;
 
   useEffect(() => {
     getProducts();
@@ -65,6 +65,7 @@ const Shop = () => {
   };
 
   const onChange = async (e) => {
+    e.preventDefault();
     const searchCategory = e.target.value;
 
     try {
@@ -82,21 +83,18 @@ const Shop = () => {
     console.log(e.target.value);
     const priceCharge = parseInt(e.target.value);
     console.log(priceCharge);
-    let minValue = 0; 
-    let maxValue = 0; 
-    if(priceCharge === 50){
+    let minValue = 0;
+    let maxValue = 0;
+    if (priceCharge === 50) {
       minValue = 0;
       maxValue = 50;
-    }
-    else if(priceCharge === 100){
+    } else if (priceCharge === 100) {
       minValue = 50;
       maxValue = 100;
-    }
-    else if(priceCharge === 200){
+    } else if (priceCharge === 200) {
       minValue = 100;
       maxValue = 200;
-    }
-    else if(priceCharge > 200){
+    } else if (priceCharge > 200) {
       minValue = 200;
       maxValue = 500;
     }
