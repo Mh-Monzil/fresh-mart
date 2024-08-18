@@ -71,7 +71,7 @@ async function run() {
       const products = await productsCollection.find().toArray();
       const filteredProduct = products.filter(
         (product) => product.price > minValue && product.price < maxValue
-      );
+      ).sort((a,b) => a.price - b.price);
       res.send(filteredProduct);
     });
   } finally {
