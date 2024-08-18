@@ -78,6 +78,21 @@ const Shop = () => {
     }
   };
 
+  const onPriceChange = async (e) => {
+    console.log(e.target.value);
+    const priceCharge = e.target.value;
+
+    try {
+      const { data } = await axiosPublic.get(
+        `/priceRange/${priceCharge}`
+      );
+      console.log(data);
+      setFilteredProducts(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div>
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-center mt-6">
@@ -105,21 +120,31 @@ const Shop = () => {
           </button>
         </form>
 
-        {/* select form  */}
-        <select onChange={onChange} className="border p-1 rounded-sm">
-          <option value="">Category</option>
-          <option value="fresh-vegetable">Fresh Vegetable</option>
-          <option value="fresh-fruits">Fresh Fruits</option>
-          <option value="dry-fruits">Dry Fruits</option>
-          <option value="butter-ghee">Butter Ghee</option>
-          <option value="juice">Juice</option>
-          <option value="cake">Cake</option>
-          <option value="ice-cream">Ice Cream</option>
-          <option value="Coffee">Coffee</option>
-          <option value="energy-drink">Energy Drink</option>
-          <option value="cereal">cereal</option>
-          <option value="cooking-essentials">Cooking Essentials</option>
-        </select>
+        <div className="flex gap-3">
+          <select onChange={onPriceChange} className="border p-1 rounded-sm">
+            <option value="">Price Range</option>
+            <option value="50">0 - 50</option>
+            <option value="100">50 - 100</option>
+            <option value="200">100 - 200</option>
+            <option value="200+">200+</option>
+          </select>
+
+          {/* select form  */}
+          <select onChange={onChange} className="border p-1 rounded-sm">
+            <option value="">Category</option>
+            <option value="fresh-vegetable">Fresh Vegetable</option>
+            <option value="fresh-fruits">Fresh Fruits</option>
+            <option value="dry-fruits">Dry Fruits</option>
+            <option value="butter-ghee">Butter Ghee</option>
+            <option value="juice">Juice</option>
+            <option value="cake">Cake</option>
+            <option value="ice-cream">Ice Cream</option>
+            <option value="Coffee">Coffee</option>
+            <option value="energy-drink">Energy Drink</option>
+            <option value="cereal">cereal</option>
+            <option value="cooking-essentials">Cooking Essentials</option>
+          </select>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mt-4 lg:mt-8">
