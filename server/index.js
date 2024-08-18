@@ -6,7 +6,11 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://fresh-mart-2cdd0.web.app"],
+  })
+);
 
 const uri = process.env.MONGO_DB_URI;
 const client = new MongoClient(uri, {
@@ -19,7 +23,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     console.log("DB Connected");
 
     const database = client.db("fresh-mart");
@@ -31,7 +35,6 @@ async function run() {
     });
 
     app.get("/productsPerPage", async (req, res) => {
-      console.log(req.query);
       const page = parseInt(req.query.page) - 1;
       const size = parseInt(req.query.size);
       const products = await productsCollection
@@ -45,7 +48,7 @@ async function run() {
     //get product by search
     app.get("/searchedProducts/:text", async (req, res) => {
       const searchText = req.params.text;
-      const finalText = new RegExp(searchText, "i");
+      const finalText = { $regex: searchText, $options: "i" };
       const query = {
         $or: [{ name: finalText }],
       };
@@ -56,7 +59,7 @@ async function run() {
     //get product by search
     app.get("/searchedCategory/:category", async (req, res) => {
       const searchCategory = req.params.category;
-      const finalCategory = new RegExp(searchCategory, "i");
+      const finalCategory = { $regex: searchCategory, $options: "i" };
       const query = {
         $or: [{ category: finalCategory }],
       };
@@ -67,11 +70,12 @@ async function run() {
     app.get("/products/priceRange", async (req, res) => {
       const minValue = parseInt(req.query.minValue);
       const maxValue = parseInt(req.query.maxValue);
-      console.log(minValue, maxValue);
       const products = await productsCollection.find().toArray();
-      const filteredProduct = products.filter(
-        (product) => product.price > minValue && product.price < maxValue
-      ).sort((a,b) => a.price - b.price);
+      const filteredProduct = products
+        .filter(
+          (product) => product.price > minValue && product.price < maxValue
+        )
+        .sort((a, b) => a.price - b.price);
       res.send(filteredProduct);
     });
   } finally {
@@ -80,7 +84,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  console.log("Fresh Mart is Fresh!");
+  res.send("Fresh Mart is Fresh!");
 });
 
 app.listen(port, console.log("FreshMart is Okay!"));

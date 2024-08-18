@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { MdCall } from "react-icons/md";
 import { useState } from "react";
 import NavLinks from "./NavLinks";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +43,7 @@ const Navbar = () => {
           {/* cart and user login  */}
           <div className="hidden md:flex text-white text-3xl items-center gap-6 cursor-pointer">
             <LuShoppingCart />
-            <FiUser />
+            <Link to="/login"><FiUser /></Link>
           </div>
 
           {/* mobile toggler  */}
