@@ -80,11 +80,30 @@ const Shop = () => {
 
   const onPriceChange = async (e) => {
     console.log(e.target.value);
-    const priceCharge = e.target.value;
+    const priceCharge = parseInt(e.target.value);
+    console.log(priceCharge);
+    let minValue = 0; 
+    let maxValue = 0; 
+    if(priceCharge === 50){
+      minValue = 0;
+      maxValue = 50;
+    }
+    else if(priceCharge === 100){
+      minValue = 50;
+      maxValue = 100;
+    }
+    else if(priceCharge === 200){
+      minValue = 100;
+      maxValue = 200;
+    }
+    else if(priceCharge > 200){
+      minValue = 200;
+      maxValue = 500;
+    }
 
     try {
       const { data } = await axiosPublic.get(
-        `/priceRange/${priceCharge}`
+        `/products/priceRange?minValue=${minValue}&maxValue=${maxValue}`
       );
       console.log(data);
       setFilteredProducts(data);
@@ -104,7 +123,7 @@ const Shop = () => {
       </p>
 
       {/* search  */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-center justify-between">
         <form onSubmit={onSearch} className="flex items-center gap-2 my-10">
           <input
             type="text"
@@ -126,7 +145,7 @@ const Shop = () => {
             <option value="50">0 - 50</option>
             <option value="100">50 - 100</option>
             <option value="200">100 - 200</option>
-            <option value="200+">200+</option>
+            <option value="201">200+</option>
           </select>
 
           {/* select form  */}
@@ -153,7 +172,7 @@ const Shop = () => {
         ))}
       </div>
 
-      <div className="w-fit mx-auto flex items-center gap-4 mt-16">
+      <div className="w-fit mx-auto flex items-center mt-16">
         <span
           onClick={handlePrevChange}
           className="px-4 py-1.5 rounded-md bg-[#f1f1f1] cursor-pointer"
@@ -164,7 +183,7 @@ const Shop = () => {
           <button
             key={idx}
             onClick={() => setCurrentPage(page + 1)}
-            className={` px-4 py-1.5 rounded-md ${
+            className={` px-4 py-1.5 ${
               page + 1 === currentPage ? "bg-primaryGreen" : "bg-[#f1f1f1]"
             }`}
           >
